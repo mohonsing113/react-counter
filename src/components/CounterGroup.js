@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Counter from './Counter';
+import CounterCreator from './CounterCreator';
 
 class CounterGroup extends Component {
 
@@ -15,12 +16,16 @@ class CounterGroup extends Component {
         this.setState({sum: this.state.sum+subSum})
     }
 
-    state={size: this.props.size}
+    addCounter = (newCounterSize)=>{
+        this.setState({counter: new Array(newCounterSize).fill(0)})
+    }
+
     render() {
         return (
             <div>
                 {this.state.counter.map(()=><Counter onUpdate={this.updateSum}/>)}
                 <span>Sum: {this.state.sum} </span>
+                <CounterCreator onAdded={this.addCounter}/>
             </div>
         );
     }

@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import Counter from './Counter';
-import CounterCreator from './CounterCreator';
+import React, { Component } from "react";
+import Counter from "./Counter";
+import { connect } from "react-redux";
 
 class CounterGroup extends Component {
 

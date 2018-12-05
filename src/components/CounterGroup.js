@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Counter from "./Counter";
+import CounterCreator from "./CounterCreator"
 import { connect } from "react-redux";
 
 class CounterGroup extends Component {
@@ -7,7 +8,6 @@ class CounterGroup extends Component {
     constructor(props){
         super(props)
         this.state = {
-            sum:0,
             counters: new Array(parseInt(this.props.size)).fill(0).map(() =>
                 {return {number :0, id: new Date().getTime+ Math.random() };
             })
@@ -31,7 +31,11 @@ class CounterGroup extends Component {
             }else{
                 return counter;
             }});
-        this.setState({counters: newCounters, sum:this.state.sum+1})
+        this.setState({counters: newCounters})
+        this.props.dispatch({ //this dispatch will wuto inject by connect() method
+            type: "COUNTERSUM",
+            payload: 1
+        });
     }
   
     decrease =(id)=>{
@@ -41,7 +45,11 @@ class CounterGroup extends Component {
             }else{
                 return counter;
             }});
-        this.setState({counters: newCounters, sum:this.state.sum-1})
+        this.setState({counters: newCounters})
+        this.props.dispatch({ //this dispatch will wuto inject by connect() method
+            type: "COUNTERSUM",
+            payload: -1
+        });
     }
 
 
@@ -53,11 +61,16 @@ class CounterGroup extends Component {
                  onIncreased={this.increase}
                  onDecreased={this.decrease}
                  counterNum ={counter.number}/>)}
-                <span>Sum: {this.state.sum} </span>
+                <span>Sum: {this.props.sum} </span>
                 <CounterCreator onAdded={this.addCounter}/>
             </div>
         );
     }
 }
 
-export default CounterGroup;
+const mapStateToProps = state => ({
+    sum: state.sum
+}); 
+connect(mapStateToProps)(CounterGroup)
+
+export default connect(mapStateToProps)(CounterGroup);
